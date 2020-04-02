@@ -14,15 +14,13 @@ class TrendingGifsController extends Controller
     {
         $this->gifRepository = $gifRepository;
     }
-   
+
     public function index()
     {
-        $gifs = Cache::remember('trending_gifs', 60*60, function () {
+        $gifs = Cache::remember('trending_gifs', 60 * 60, function () {
             return $this->gifRepository->getTrendingGifs();
         });
-        
-        return view('home')->with([
-            'gifs' => $gifs
-        ]);
+
+        return view('home', compact('gifs'));
     }
 }

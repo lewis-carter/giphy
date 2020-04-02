@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'TrendingGifsController@index')->name('trending_gifs.index');
+Route::get('/', 'TrendingGifsController@index')->name('trending.index');
+Route::get('/search', 'SearchGifsController@index')->name('search.index');

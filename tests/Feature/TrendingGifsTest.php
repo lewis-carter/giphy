@@ -10,19 +10,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TrendingGifsTest extends TestCase
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->mock(GifRepositoryInterface::class, function ($mock) {
-            $mock->shouldReceive()->getTrendingGifs()->once()->andReturn($this->trendingGifs());
+            $mock->shouldReceive()->getTrendingGifs()->andReturn($this->trendingGifs());
         });
     }
 
     /** @test */
     public function can_see_trending_gifs()
     {
-        $res = $this->get(route('trending_gifs.index'));
+        $res = $this->get(route('trending.index'));
 
         $res->assertSeeText("Trending Giphy Title")
             ->assertSee('https://media0.giphy.com/media/trending.gif');
@@ -33,7 +33,7 @@ class TrendingGifsTest extends TestCase
     {
         $this->assertFalse(Cache::has('trending_gifs'));
 
-        $this->get(route('trending_gifs.index'));
+        $this->get(route('trending.index'));
 
         $this->assertTrue(Cache::has('trending_gifs'));
     }

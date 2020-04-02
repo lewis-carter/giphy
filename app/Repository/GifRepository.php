@@ -15,4 +15,14 @@ class GifRepository implements GifRepositoryInterface
 
         return $res->ok() ? $res->json()['data'] : [];
     }
+
+    public function searchGifs($search)
+    {
+        $res = Http::get("api.giphy.com/v1/gifs/search", [
+            'q' => $search,
+            'api_key' => config('services.giphy.key')
+        ]);
+
+        return $res->ok() ? $res->json()['data'] : [];
+    }
 }
