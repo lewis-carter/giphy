@@ -3,7 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Repository\GifRepositoryInterface;
+use App\Services\Giphy\Giphy;
+use Tests\Stubs\Giphy\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,8 +15,8 @@ class TrendingGifsTest extends TestCase
     {
         parent::setUp();
 
-        $this->mock(GifRepositoryInterface::class, function ($mock) {
-            $mock->shouldReceive()->getTrendingGifs()->andReturn($this->trendingGifs());
+        $this->mock(Giphy::class, function ($mock) {
+            $mock->shouldReceive('trending->get')->andReturn(Collection::get());
         });
     }
 
@@ -24,8 +25,8 @@ class TrendingGifsTest extends TestCase
     {
         $res = $this->get(route('trending.index'));
 
-        $res->assertSeeText("Trending Giphy Title")
-            ->assertSee('https://media0.giphy.com/media/trending.gif');
+        $res->assertSeeText("Collection Gif Name")
+            ->assertSee('https://collection.gif');
     }
 
     /** @test */
@@ -36,19 +37,5 @@ class TrendingGifsTest extends TestCase
         $this->get(route('trending.index'));
 
         $this->assertTrue(Cache::has('trending_gifs'));
-    }
-
-    private function trendingGifs()
-    {
-        return [
-            [
-                'title' => 'Trending Giphy Title',
-                'images' => [
-                    'downsized' => [
-                        'url' => 'https://media0.giphy.com/media/trending.gif'
-                    ]
-                ]
-            ]
-        ];
     }
 }

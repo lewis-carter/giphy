@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Services\Giphy\Giphy;
+use Tests\Stubs\Giphy\Collection;
 use Illuminate\Support\Facades\Cache;
-use App\Repository\GifRepositoryInterface;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,8 +15,8 @@ class SearchGifsTest extends TestCase
     {
         parent::setUp();
 
-        $this->mock(GifRepositoryInterface::class, function ($mock) {
-            $mock->shouldReceive()->searchGifs('wildlife')->andReturn($this->searchedGifs());
+        $this->mock(Giphy::class, function ($mock) {
+            $mock->shouldReceive('search->get')->andReturn(Collection::get());
         });
     }
 
@@ -24,8 +25,8 @@ class SearchGifsTest extends TestCase
     {
         $res = $this->get(route('search.index', ['search' => 'wildlife']));
 
-        $res->assertSeeText("Searched Giphy Title")
-            ->assertSee('https://media0.giphy.com/media/trending.gif');
+        $res->assertSeeText("Collection Gif Name")
+            ->assertSee('https://collection.gif');
     }
 
     /** @test */
@@ -44,19 +45,5 @@ class SearchGifsTest extends TestCase
         $this->get(route('search.index', ['search' => 'wildlife']));
 
         $this->assertTrue(Cache::has('wildlife_searched_gifs'));
-    }
-
-    private function searchedGifs()
-    {
-        return [
-            [
-                'title' => 'Searched Giphy Title',
-                'images' => [
-                    'downsized' => [
-                        'url' => 'https://media0.giphy.com/media/trending.gif'
-                    ]
-                ]
-            ]
-        ];
     }
 }
