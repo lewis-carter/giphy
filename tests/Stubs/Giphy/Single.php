@@ -87,7 +87,7 @@ class Single
                 array(
                     'height' => '281',
                     'size' => '1416879',
-                    'url' => 'https://media1.giphy.com/media/c6V64L5x93HgOKyLiA/giphy-downsized.gif?cid=b7cf5139d9d5af8b6b92c6beea5273cafda6c0d037bf4ab7&rid=giphy-downsized.gif',
+                    'url' => 'https://single.gif',
                     'width' => '500',
                 ),
                 'preview_webp' =>

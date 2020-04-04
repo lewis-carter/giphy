@@ -2,31 +2,29 @@
 
 namespace Tests\Feature;
 
+use App\Models\Gif;
 use Tests\TestCase;
 use App\Services\Giphy\Giphy;
-use Tests\Stubs\Giphy\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TrendingGifsTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->mock(Giphy::class, function ($mock) {
-            $mock->shouldReceive('trending->get')->andReturn(Collection::get());
-        });
-    }
-
     /** @test */
     public function can_see_trending_gifs()
     {
+        $gifs = factory(Gif::class, 25)->make();
+
+        $this->mock(Giphy::class, function ($mock) use ($gifs) {
+            $mock->shouldReceive('trending')->andReturn($gifs);
+        });
+
         $res = $this->get(route('trending.index'));
 
-        $res->assertSeeText("Collection Gif Name")
-            ->assertSee('https://collection.gif');
+        $res->assertStatus(200)
+            ->assertSeeText($gifs[0]['name'])
+            ->assertSee($gifs[0]['url']);
     }
 
     /** @test */

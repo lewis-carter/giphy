@@ -2,39 +2,56 @@
 
 namespace App\Services\Giphy;
 
+use App\Models\Gif;
 use Illuminate\Support\Facades\Http;
 
 class Giphy
 {
-    protected $endpoint;
     protected $params;
 
     public function __construct()
     {
-        $this->endpoint = 'api.giphy.com/v1/gifs/trending';
         $this->params = ['api_key' => config('services.giphy.key')];
-    }
-
-    public function get()
-    {
-        $res = Http::get($this->endpoint, $this->params);
-
-        return $res->ok() ? $res->json()['data'] : [];
     }
 
     public function trending()
     {
-        $this->endpoint = 'api.giphy.com/v1/gifs/trending';
+        $res = Http::get('api.giphy.com/v1/gifs/trending', $this->params);
 
-        return $this;
+        return $res->ok() ? $this->collection($res->json()['data']) : [];
     }
 
     public function search($search)
     {
-        $this->endpoint = 'api.giphy.com/v1/gifs/search';
+        $res = Http::get('api.giphy.com/v1/gifs/search', $this->params);
 
         $this->params['q'] = $search;
 
-        return $this;
+        return $res->ok() ? $this->collection($res->json()['data']) : [];
+    }
+
+    public function random()
+    {
+        $res = Http::get('api.giphy.com/v1/gifs/random', $this->params);
+
+        return $res->ok() ? $this->single($res->json()['data']) : [];
+    }
+
+    private function collection($gifs)
+    {
+        return collect($gifs)->map(function ($gif) {
+            return Gif::make([
+                'title' => $gif['title'],
+                'url' => $gif['images']['downsized']['url']
+            ]);
+        });
+    }
+
+    private function single($gif)
+    {
+        return Gif::make([
+            'title' => $gif['title'],
+            'url' => $gif['images']['downsized']['url']
+        ]);
     }
 }
