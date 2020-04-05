@@ -23,9 +23,9 @@ class Giphy
 
     public function search($search)
     {
-        $res = Http::get('api.giphy.com/v1/gifs/search', $this->params);
-
         $this->params['q'] = $search;
+
+        $res = Http::get('api.giphy.com/v1/gifs/search', $this->params);
 
         return $res->ok() ? $this->collection($res->json()['data']) : [];
     }

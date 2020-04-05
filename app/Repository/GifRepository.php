@@ -18,7 +18,7 @@ class GifRepository implements GifRepositoryInterface
         return Giphy::search($search);
     }
 
-    public function getRandomGifs($limit = 5)
+    public function getRandomGifs($limit = 8)
     {
         $gifs = collect();
 

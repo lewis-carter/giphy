@@ -15,11 +15,11 @@ class ModifiedGifRepository implements ModifiedGifRepositoryInterface
 
     public function paginate()
     {
-        return DB::table('modified_gifs')->inRandomOrder()->simplePaginate(15);
+        return DB::table('modified_gifs')->inRandomOrder()->simplePaginate(16);
     }
 
     public function search($search)
     {
-        return DB::table('modified_gifs')->where('title', 'like', "%{$search}%")->simplePaginate(15);
+        return DB::table('modified_gifs')->where('title', 'like', "%{$search}%")->simplePaginate(16);
     }
 }
