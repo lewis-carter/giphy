@@ -31,7 +31,7 @@ class RandomGifsService
         $this->gifRepository->modify($notModifiedGifs);
 
         // Modify gifs
-        $modifiedGifs = $notModifiedGifs->map(function ($gif) {
+        $modifiedGifs = collect($notModifiedGifs)->map(function ($gif) {
             return [
                 'title' => $gif->title . time(),
                 'url' => $gif->url
