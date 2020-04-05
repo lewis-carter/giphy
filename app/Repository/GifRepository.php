@@ -3,22 +3,22 @@
 namespace App\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Facades\App\Services\Giphy\Giphy;
+use Facades\App\Jump24\Giphy;
 use App\Repository\GifRepositoryInterface;
 
 class GifRepository implements GifRepositoryInterface
 {
-    public function getTrendingGifs()
+    public function getTrending()
     {
         return Giphy::trending();
     }
 
-    public function searchGifs($search)
+    public function getSearch($search)
     {
         return Giphy::search($search);
     }
 
-    public function getRandomGifs($limit = 8)
+    public function getRandom($limit = 8)
     {
         $gifs = collect();
 
@@ -34,24 +34,15 @@ class GifRepository implements GifRepositoryInterface
         return DB::table('gifs')->insert($gifs);
     }
 
-    public function notModified()
+    public function getNotModified()
     {
         return DB::select('select * from gifs where modified = 0');
     }
 
     public function modify($gifs)
     {
-        $gifs = collect($gifs);
-
-        DB::table('gifs')
-            ->whereIn('id', $gifs->pluck('id')->toArray())
+        return DB::table('gifs')
+            ->whereIn('id', collect($gifs)->pluck('id')->toArray())
             ->update(['modified' => 1]);
-
-        return $gifs->map(function ($gif) {
-            return [
-                'title' => $gif->title . time(),
-                'url' => $gif->url
-            ];
-        });
     }
 }

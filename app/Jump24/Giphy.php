@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Giphy;
+namespace App\Jump24;
 
 use App\Models\Gif;
 use Illuminate\Support\Facades\Http;

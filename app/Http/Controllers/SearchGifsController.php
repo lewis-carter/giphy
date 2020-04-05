@@ -19,7 +19,7 @@ class SearchGifsController extends Controller
     public function index(SearchGifsRequest $request)
     {
         $gifs = Cache::remember("{$request->search}_searched_gifs", 60, function () use ($request) {
-            return $this->gifRepository->searchGifs($request->search);
+            return $this->gifRepository->getSearch($request->search);
         });
 
         return view('search', compact('gifs'));

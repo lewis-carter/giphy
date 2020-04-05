@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Facades\App\Services\Giphy\Giphy;
 use App\Repository\GifRepositoryInterface;
 
 class ModifiedGifRepository implements ModifiedGifRepositoryInterface

@@ -2,33 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Repository\GifRepositoryInterface;
-use App\Repository\ModifiedGifRepositoryInterface;
+use App\Services\RandomGifsService;
 
 class RandomGifsController extends Controller
 {
-    private $gifRepository;
-    private $modifiedGifRepository;
+    private $randomGifsService;
 
-    public function __construct(GifRepositoryInterface $gifRepository, ModifiedGifRepositoryInterface $modifiedGifRepository)
+    public function __construct(RandomGifsService $randomGifsService)
     {
-        $this->gifRepository = $gifRepository;
-        $this->modifiedGifRepository = $modifiedGifRepository;
+        $this->randomGifsService = $randomGifsService;
     }
 
     public function index()
     {
-        $gifs = $this->gifRepository->getRandomGifs();
-
-        $this->gifRepository->store($gifs->toArray());
-
-        $notModifiedGifs = $this->gifRepository->notModified();
-
-        $modifiedGifs = $this->gifRepository->modify($notModifiedGifs);
-
-        $this->modifiedGifRepository->store($modifiedGifs->toArray());
+        $gifs = $this->randomGifsService->index();
 
         return view('random', compact('gifs'));
     }

@@ -4,15 +4,15 @@ namespace App\Repository;
 
 interface GifRepositoryInterface
 {
-    public function getTrendingGifs();
+    public function getTrending();
 
-    public function searchGifs($search);
+    public function getSearch($search);
 
-    public function getRandomGifs();
+    public function getRandom();
 
     public function store($gifs);
 
-    public function notModified();
+    public function getNotModified();
 
     public function modify($gifs);
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Gif;
 use Tests\TestCase;
-use App\Services\Giphy\Giphy;
+use App\Jump24\Giphy;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

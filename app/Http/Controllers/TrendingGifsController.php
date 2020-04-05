@@ -18,7 +18,7 @@ class TrendingGifsController extends Controller
     public function index()
     {
         $gifs = Cache::remember('trending_gifs', 60 * 60, function () {
-            return $this->gifRepository->getTrendingGifs();
+            return $this->gifRepository->getTrending();
         });
 
         return view('home', compact('gifs'));
