@@ -39,7 +39,7 @@ class RandomGifsTest extends TestCase
     /** @test */
     public function creates_modified_records()
     {
-        $res = $this->get(route('random.index'));
+        $this->get(route('random.index'));
 
         $this->assertDatabaseHas('gifs', [
             'title' => $this->gif['title'],

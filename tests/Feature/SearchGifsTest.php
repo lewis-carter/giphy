@@ -11,20 +11,27 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SearchGifsTest extends TestCase
 {
+    protected $gifs;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->gifs = factory(Gif::class, 25)->make();
+
+        $this->mock(Giphy::class, function ($mock) {
+            $mock->shouldReceive('search')->andReturn($this->gifs);
+        });
+    }
+
     /** @test */
     public function can_search_gifs()
     {
-        $gifs = factory(Gif::class, 25)->make();
-
-        $this->mock(Giphy::class, function ($mock) use ($gifs) {
-            $mock->shouldReceive('search')->andReturn($gifs);
-        });
-
         $res = $this->get(route('search.index', ['search' => 'wildlife']));
 
         $res->assertStatus(200)
-            ->assertSeeText($gifs[0]['name'])
-            ->assertSee($gifs[0]['url']);
+            ->assertSeeText($this->gifs[0]['name'])
+            ->assertSee($this->gifs[0]['url']);
     }
 
     /** @test */
