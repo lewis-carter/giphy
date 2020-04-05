@@ -3,11 +3,12 @@
 ## Set up
 
 1. Clone the project `git clone https://github.com/lewis-carter/giphy.git`.
+1. Run `composer install` to install dependencies.
 1. Create a `.env` by copying the the example file `cp .env.example .env`.
-1. Generate an application key `php artisan key:genertate`.
-1. Update the database environment details to your local database.
+1. Update the database environment details to your local database and add the Giphy api key.
+1. Generate an application key `php artisan key:generate`.
 1. Run `php artisan migrate` to run migrations.
-1. Serve the application with `php artian serve` or link the site if using Valet.
+1. Serve the application with `php artisan serve` or link the site if using Valet.
 
 ## Database Queries
 
