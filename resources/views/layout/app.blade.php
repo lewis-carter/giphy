@@ -21,8 +21,6 @@
         <a href="/modified" class="mx-4 text-white">Random Stored Gifs</a>
     </nav>
 
-    
-
     @yield('content')
 
 </body>
