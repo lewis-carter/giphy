@@ -29,7 +29,6 @@
             <a href="{{ $gifs->nextPageUrl() }}" class="mx-4 px-4 py-2 bg-gray-900 text-white rounded">Next Page</a>
         @endif
     </div>
-    
 </div>
 
 
