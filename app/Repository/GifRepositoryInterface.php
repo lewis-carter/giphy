@@ -11,4 +11,8 @@ interface GifRepositoryInterface
     public function getRandomGifs();
 
     public function store($gifs);
+
+    public function notModified();
+
+    public function modify($gifs);
 }

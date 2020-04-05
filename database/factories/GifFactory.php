@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Gif::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(),
-        'url' => $faker->imageUrl()
+        'url' => $faker->imageUrl(),
     ];
 });

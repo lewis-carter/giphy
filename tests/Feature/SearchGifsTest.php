@@ -32,7 +32,8 @@ class SearchGifsTest extends TestCase
     {
         $res = $this->get(route('search.index'));
 
-        $res->assertStatus(302);
+        $res->assertSessionHasErrors('search')
+            ->assertStatus(302);
     }
 
     /** @test */

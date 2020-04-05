@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGifsTable extends Migration
+class CreateModifiedGifsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateGifsTable extends Migration
      */
     public function up()
     {
-        Schema::create('gifs', function (Blueprint $table) {
+        Schema::create('modified_gifs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('url');
-            $table->boolean('modified')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateGifsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('random_gifs');
+        Schema::dropIfExists('modified_gifs');
     }
 }

@@ -20,8 +20,6 @@ class GifRepository implements GifRepositoryInterface
 
     public function getRandomGifs($limit = 5)
     {
-        // There isn't an endpoint to return a collection of
-        // random gifs so we'll do it manually
         $gifs = collect();
 
         for ($i = 0; $i < $limit; $i++) {
@@ -33,11 +31,27 @@ class GifRepository implements GifRepositoryInterface
 
     public function store($gifs)
     {
-        // Bulk Insert
-        // insert into `gifs` (`title`, `url`) values
-        // ('Gif Title', 'Gif Url'),
-        // ('Gif Title', 'Gif Url'),
-        // ...
-        DB::table('gifs')->insert($gifs);
+        return DB::table('gifs')->insert($gifs);
+    }
+
+    public function notModified()
+    {
+        return DB::select('select * from gifs where modified = 0');
+    }
+
+    public function modify($gifs)
+    {
+        $gifs = collect($gifs);
+
+        DB::table('gifs')
+            ->whereIn('id', $gifs->pluck('id')->toArray())
+            ->update(['modified' => 1]);
+
+        return $gifs->map(function ($gif) {
+            return [
+                'title' => $gif->title . time(),
+                'url' => $gif->url
+            ];
+        });
     }
 }

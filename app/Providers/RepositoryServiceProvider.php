@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Repository\GifRepository;
 use Illuminate\Support\ServiceProvider;
+use App\Repository\ModifiedGifRepository;
 use App\Repository\GifRepositoryInterface;
+use App\Repository\ModifiedGifRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(GifRepositoryInterface::class, GifRepository::class);
+        $this->app->bind(ModifiedGifRepositoryInterface::class, ModifiedGifRepository::class);
     }
 
     /**

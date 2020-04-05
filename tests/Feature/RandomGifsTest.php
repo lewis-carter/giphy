@@ -10,38 +10,56 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RandomGifsTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
+
+    protected $gif;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->gif = factory(Gif::class)->make();
+
+        $this->mock(Giphy::class, function ($mock) {
+            $mock->shouldReceive('random')->andReturn($this->gif);
+        });
+    }
 
     /** @test */
     public function deposits_random_giphy_response_to_gifs_table()
     {
-        $gif = factory(Gif::class)->make();
-
-        $this->mock(Giphy::class, function ($mock) use ($gif) {
-            $mock->shouldReceive('random')->andReturn($gif);
-        });
-
         $res = $this->get(route('random.index'));
 
         $this->assertDatabaseHas('gifs', [
-            'title' => $gif['title'],
-            'url' => $gif['url']
+            'title' => $this->gif['title'],
+            'url' => $this->gif['url'],
+        ]);
+    }
+
+    /** @test */
+    public function creates_modified_records()
+    {
+        $res = $this->get(route('random.index'));
+
+        $this->assertDatabaseHas('gifs', [
+            'title' => $this->gif['title'],
+            'url' => $this->gif['url'],
+            'modified' => '1'
+        ]);
+
+        $this->assertDatabaseHas('modified_gifs', [
+            'title' => $this->gif['title'] . time(),
+            'url' => $this->gif['url'],
         ]);
     }
 
     /** @test */
     public function can_see_random_gif()
     {
-        $gif = factory(Gif::class)->make();
-
-        $this->mock(Giphy::class, function ($mock) use ($gif) {
-            $mock->shouldReceive('random')->andReturn($gif);
-        });
-
         $res = $this->get(route('random.index'));
 
         $res->assertStatus(200)
-            ->assertSeeText($gif['name'])
-            ->assertSee($gif['url']);
+            ->assertSeeText($this->gif['name'])
+            ->assertSee($this->gif['url']);
     }
 }
